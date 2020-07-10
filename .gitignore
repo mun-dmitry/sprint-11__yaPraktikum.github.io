@@ -3,5 +3,6 @@
 *.png
 *.sys
 *.tmp
-.DS_Store
+*.DS_Store
 *.woff2
+node_modules

@@ -1,6 +1,6 @@
-class Popup {
+export class Popup {
 
-    constructor (templates, createFormValidator, userInfo, userInfoDataContainer, parentObject, cardList, api) {
+    constructor (templates, createFormValidator, userInfo, userInfoDataContainer, parentObject, cardList, api, validationErrorMessages) {
         this._createFormValidator = createFormValidator;
         this._userInfo = userInfo;
         this._userInfoDataContainer = userInfoDataContainer;
@@ -8,6 +8,7 @@ class Popup {
         this._parentObject = parentObject;
         this._cardList = cardList;
         this._api = api;
+        this._validationErrorMessages = validationErrorMessages;
     }
 
     openHandler = (event) => {
@@ -47,7 +48,7 @@ class Popup {
     }
 
     _setFormValidator = () => {
-        const formValidator = this._createFormValidator(this._view.querySelector('form'), validationErrorMessages);
+        const formValidator = this._createFormValidator(this._view.querySelector('form'), this._validationErrorMessages);
         formValidator.setEventListeners();
         formValidator.setSubmitButtonState();
     }

@@ -1,4 +1,4 @@
-class UserInfo {
+export class UserInfo {
 
     constructor (dataContainer) {
         this._dataContainer = dataContainer;
