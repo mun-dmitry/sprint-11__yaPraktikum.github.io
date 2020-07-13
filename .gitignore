@@ -6,3 +6,4 @@
 *.DS_Store
 *.woff2
 node_modules
+dist

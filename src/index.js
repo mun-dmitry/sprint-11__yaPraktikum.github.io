@@ -1,3 +1,12 @@
+import {Api} from './scripts/Api.js';
+import {Card} from './scripts/Card.js';
+import {Cardlist} from './scripts/Cardlist.js';
+import {FormValidator} from './scripts/FormValidator.js';
+import {Popup} from './scripts/Popup.js';
+import {UserInfo} from './scripts/UserInfo.js';
+import {validationErrorMessages} from './scripts/validationErrorMessages.js';
+import './pages/index.css';
+
 const page = document.querySelector('.root');
 const addCardButton = document.querySelector('.user-info__button');
 const profileEditButton = document.querySelector('.user-info__edit-button');
@@ -17,14 +26,6 @@ const apiProperties = {
     baseUrl: 'https://praktikum.tk/cohort11/',
     token: '8ab3f6fe-db55-4026-9a8e-96b5421c8f61',
 }
-
-import {Api} from './scripts/Api.js';
-import {Card} from './scripts/Card.js';
-import {Cardlist} from './scripts/Cardlist.js';
-import {FormValidator} from './scripts/FormValidator.js';
-import {Popup} from './scripts/Popup.js';
-import {UserInfo} from './scripts/UserInfo.js';
-import {validationErrorMessages} from './scripts/validationErrorMessages.js';
 
 const userInfo = new UserInfo(userInfoDataContainer);
 const api = new Api(apiProperties);
