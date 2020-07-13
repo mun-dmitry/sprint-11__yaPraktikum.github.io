@@ -1,9 +1,4 @@
-*.jpg
-*.svg
-*.png
 *.sys
 *.tmp
 *.DS_Store
-*.woff2
 node_modules
-dist
