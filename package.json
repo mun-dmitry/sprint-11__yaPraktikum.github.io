@@ -1,10 +1,10 @@
 {
   "name": "sprint-11__yapraktikum",
   "version": "1.0.0",
-  "description": "0.0.1",
+  "description": "Практическая работа 11 из курса Яндекс.Практикум",
   "main": "index.js",
   "scripts": {
-    "build": "cross-env NODE_ENV=production rimraf dist && webpack --mode production",
+    "build": "rimraf dist && cross-env NODE_ENV=production webpack --mode production",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --mode development --open --watch",
     "deploy": "cross-env NODE_ENV=production gh-pages -d dist"
   },
@@ -18,6 +18,9 @@
     "url": "https://github.com/mun-dmitry/sprint-11__yaPraktikum/issues"
   },
   "homepage": "https://github.com/mun-dmitry/sprint-11__yaPraktikum#readme",
+  "browserslist": [
+    "defaults"
+  ],
   "devDependencies": {
     "@babel/cli": "^7.10.4",
     "@babel/core": "^7.10.4",
@@ -40,6 +43,7 @@
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "core-js": "^3.4.1",
+    "gh-pages": "~3.1.0",
     "optimize-css-assets-webpack-plugin": "^5.0.3"
   }
 }

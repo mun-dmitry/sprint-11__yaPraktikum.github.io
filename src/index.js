@@ -23,7 +23,7 @@ const popupTemplates = {
     avatar: document.querySelector('#avatar-upload-template')
 }
 const apiProperties = {
-    baseUrl: 'https://praktikum.tk/cohort11/',
+    baseUrl: NODE_ENV === 'development' ? 'http://praktikum.tk/cohort11/' : 'https://praktikum.tk/cohort11/',
     token: '8ab3f6fe-db55-4026-9a8e-96b5421c8f61',
 }
 
