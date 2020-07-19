@@ -1,4 +1,4 @@
-class FormValidator {
+export class FormValidator {
 
     constructor (formElement, validationErrorMessages) {
         this._formElement = formElement;

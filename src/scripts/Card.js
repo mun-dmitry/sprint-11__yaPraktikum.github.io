@@ -1,4 +1,4 @@
-class Card {
+export class Card {
 
     constructor (cardData, template, popupObject, api) {
         this._cardData = cardData;
@@ -63,7 +63,6 @@ class Card {
     }
 
     _checkDeleteAbility = () => {
-      console.log(this._api._myId, this._cardData.owner._id);
         if (this._cardData.owner._id == this._api._myId) {
             this._view.querySelector('.place-card__delete-icon').style.display = 'block';
         }

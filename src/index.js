@@ -1,3 +1,12 @@
+import {Api} from './scripts/Api.js';
+import {Card} from './scripts/Card.js';
+import {Cardlist} from './scripts/Cardlist.js';
+import {FormValidator} from './scripts/FormValidator.js';
+import {Popup} from './scripts/Popup.js';
+import {UserInfo} from './scripts/UserInfo.js';
+import {validationErrorMessages} from './scripts/validationErrorMessages.js';
+import './pages/index.css';
+
 const page = document.querySelector('.root');
 const addCardButton = document.querySelector('.user-info__button');
 const profileEditButton = document.querySelector('.user-info__edit-button');
@@ -14,14 +23,14 @@ const popupTemplates = {
     avatar: document.querySelector('#avatar-upload-template')
 }
 const apiProperties = {
-    baseUrl: 'https://praktikum.tk/cohort11/',
+    baseUrl: NODE_ENV === 'development' ? 'http://praktikum.tk/cohort11/' : 'https://praktikum.tk/cohort11/',
     token: '8ab3f6fe-db55-4026-9a8e-96b5421c8f61',
 }
 
 const userInfo = new UserInfo(userInfoDataContainer);
 const api = new Api(apiProperties);
 const placesList = new Cardlist(cardListTemplate, page, createCard, cardTemplate, api);
-const popup = new Popup(popupTemplates, createFormValidator, userInfo, userInfoDataContainer, page, placesList, api);
+const popup = new Popup(popupTemplates, createFormValidator, userInfo, userInfoDataContainer, page, placesList, api, validationErrorMessages);
 
 placesList.uploadPopup(popup);
 placesList.render();
@@ -46,8 +55,3 @@ api.loadDefaultCards()
 addCardButton.addEventListener('click', popup.openHandler);
 profileEditButton.addEventListener('click', popup.openHandler);
 avatarUploadButton.addEventListener('click', popup.openHandler);
-
-/**
- * Отлично, помимо основых замечаний были исправлены и дополнительные.
- * Работа принята, желаю успехов в дальнейшем обучении!
- */

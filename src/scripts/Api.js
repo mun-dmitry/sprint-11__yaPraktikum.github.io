@@ -1,4 +1,4 @@
-class Api {
+export class Api {
     constructor (apiProperties) {
         this._baseURL = apiProperties.baseUrl;
         this._token = apiProperties.token;
