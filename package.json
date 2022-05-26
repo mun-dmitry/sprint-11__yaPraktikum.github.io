@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rimraf dist && cross-env NODE_ENV=production webpack --mode production",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --mode development --open --watch",
-    "deploy": "cross-env NODE_ENV=production gh-pages -d dist"
+    "deploy": "cross-env NODE_ENV=production npm run build && scp -r ./dist/* root@185.117.155.110:/home/praktikum/mesto-frontend"
   },
   "repository": {
     "type": "git",

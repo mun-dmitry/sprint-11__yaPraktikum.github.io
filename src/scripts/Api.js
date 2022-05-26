@@ -39,11 +39,7 @@ export class Api {
     }
 
     loadDefaultCards () {
-        return fetch (`${this._baseURL}cards`, {
-            headers: {
-                authorization: this._token
-            }
-        })
+        return fetch (`${this._baseURL}cards`)
             .then (res => {
                 if (res.ok) {
                     return res.json();
@@ -165,4 +161,40 @@ export class Api {
                 }
             })
     }
+
+    signIn (credentials) {
+        return fetch(`${this._baseURL}signin`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: credentials.email,
+                password: credentials.password,
+            }),
+        })
+            .then((res) => (res.ok ? res.json() : Promise.reject(res.message)))
+            .then((data) => data)
+    }
+
+    signUp(userData) {
+        return fetch(`${this._baseURL}signup`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: userData.email,
+            password: userData.password,
+            name: userData.name,
+          }),
+        })
+          .then((res) => {
+            if (res.ok) {
+              return res.json();
+            }
+            return Promise.reject(res.message);
+          })
+          .then((data) => data)
+      }
 }
