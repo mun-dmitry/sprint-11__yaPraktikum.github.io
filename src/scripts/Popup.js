@@ -30,6 +30,16 @@ export class Popup {
             this._view = this._templates.avatar.content.cloneNode(true).children[0];
             this._setFormValidator();
             this._view.querySelector('.popup__button').addEventListener('click', this._uploadAvatar);
+        } else if (event.target.classList.contains('header__bordered-button')) {
+            this._openAuthorizationForm()
+        } else if (event.target.classList.contains('popup__link')) {
+            this._close();
+            if (event.target.innerText === 'Зарегистрироваться') {
+                this._openRegistrationForm();
+            } else if (event.target.innerText === 'Войти') {
+                this._openAuthorizationForm();
+            }
+            
         }
 
         this._view.classList.add('popup_is-opened');
@@ -45,6 +55,36 @@ export class Popup {
         if (event.keyCode == 27) {
             this._close();
         }
+    }
+
+    _openRegistrationForm = () => {
+        this._view = this._templates.registration.content.cloneNode(true).children[0];
+        this._setFormValidator();
+        this._view.querySelector('.popup__button').addEventListener('click', this._submitRegistrationForm);
+        this._view.querySelector('.popup__link').addEventListener('click', this.openHandler);
+    }
+
+    _openAuthorizationForm = () => {
+        // if (event.target.innerText === 'Авторизоваться') {
+            this._view = this._templates.login.content.cloneNode(true).children[0];
+            this._setFormValidator();
+            this._view.querySelector('.popup__button').addEventListener('click', this._submitLoginForm);
+            this._view.querySelector('.popup__link').addEventListener('click', this.openHandler);
+        // }   else if (event.target.innerText === 'Войти') {
+
+        // } else {
+        //   console.log('Деавторизация');
+        // }
+    }
+
+    _openSuccessPopup = () => {
+        this._view = this._templates.success.content.cloneNode(true).children[0];
+        this._view.querySelector('.popup__link').addEventListener('click', this.openHandler);
+        
+        
+        this._view.classList.add('popup_is-opened');
+        this._setEventListeners();
+        this._parentObject.append(this._view);
     }
 
     _setFormValidator = () => {
@@ -108,6 +148,42 @@ export class Popup {
             .finally (() => {
                 this._close();
             });
+    }
+
+    _submitLoginForm = () => {
+        const credentials = {};
+        credentials.email = this._view.querySelector('form').elements.email.value;
+        credentials.password = this._view.querySelector('form').elements.password.value;
+        this._animateLoadingButton();
+        this._api.signIn(credentials)
+            .then (userData => {
+                console.log(userData);
+            })
+            .catch (err => {
+                console.log(err);
+            })
+            .finally (() => {
+                this._close();
+            })
+    }
+
+    _submitRegistrationForm = (event) => {
+        const credentials = {};
+        credentials.email = this._view.querySelector('form').elements.email.value;
+        credentials.password = this._view.querySelector('form').elements.password.value;
+        credentials.name = this._view.querySelector('form').elements.name.value;
+        this._animateLoadingButton();
+        this._api.signUp(credentials)
+            .then (userData => {
+                console.log(userData);
+            })
+            .catch (err => {
+                console.log(err);
+            })
+            .finally (() => {
+                this._close();
+                this._openSuccessPopup(event);
+            })
     }
 
     _setEventListeners = () => {

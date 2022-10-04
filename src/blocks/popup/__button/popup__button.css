@@ -34,3 +34,15 @@
   border-radius: 2px;
   color: #ffffff;
 }
+
+[id="login-form"]:valid .popup__button {
+  background: #000000;
+  border-radius: 2px;
+  color: #ffffff;
+}
+
+[id="registration-form"]:valid .popup__button {
+  background: #000000;
+  border-radius: 2px;
+  color: #ffffff;
+}

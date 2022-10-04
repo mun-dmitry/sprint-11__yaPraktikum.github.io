@@ -26,9 +26,16 @@ export class FormValidator {
         if (inputElement.validity.valueMissing) {
             error.textContent = this._errorMessages.emptyInput;
         } else if (inputElement.validity.tooShort || inputElement.validity.tooLong) {
+            inputElement.name === 'password' ? 
+            error.textContent = this._errorMessages.passwordWrongLength : 
             error.textContent = this._errorMessages.wrongLength;
         } else if (inputElement.validity.typeMismatch) {
-            error.textContent = this._errorMessages.urlTypeMismatch;
+            if (inputElement.name === 'link') {
+                error.textContent = this._errorMessages.urlTypeMismatch;
+            } else if (inputElement.name === 'email') {
+                error.textContent = this._errorMessages.emailTypeMismatch;
+            }
+            
         }
     }
 

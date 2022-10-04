@@ -11,6 +11,7 @@ const page = document.querySelector('.root');
 const addCardButton = document.querySelector('.user-info__button');
 const profileEditButton = document.querySelector('.user-info__edit-button');
 const avatarUploadButton = document.querySelector('.user-info__photo');
+const authorizationButton = document.querySelector('.header__bordered-button');
 const createCard = (...arg) => new Card(...arg);
 const createFormValidator = (...arg) => new FormValidator(...arg);
 const userInfoDataContainer = document.querySelector('.user-info');
@@ -20,7 +21,10 @@ const popupTemplates = {
     addCard: document.querySelector('#addcard-template'),
     profile: document.querySelector('#edit-profile-template'),
     image: document.querySelector('#image-template'),
-    avatar: document.querySelector('#avatar-upload-template')
+    avatar: document.querySelector('#avatar-upload-template'),
+    login: document.querySelector('#login-template'),
+    registration: document.querySelector('#registration-template'),
+    success: document.querySelector('#success-template'),
 }
 const apiProperties = {
     baseUrl: NODE_ENV === 'development' ? 'http://localhost:3000/' : 'https://api.yapr-mestoapp.tk/',
@@ -55,3 +59,4 @@ api.loadDefaultCards()
 addCardButton.addEventListener('click', popup.openHandler);
 profileEditButton.addEventListener('click', popup.openHandler);
 avatarUploadButton.addEventListener('click', popup.openHandler);
+authorizationButton.addEventListener('click', popup.openHandler);
