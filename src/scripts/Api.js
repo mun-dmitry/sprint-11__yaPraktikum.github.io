@@ -19,7 +19,7 @@ export class Api {
      пропустить этот участок или ошибиться в нем.
      */
 
-  getUserData () {
+    getUserData () {
         return fetch (`${this._baseURL}users/me`, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem('token')}`,

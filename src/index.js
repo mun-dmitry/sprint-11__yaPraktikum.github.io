@@ -5,7 +5,6 @@ import {FormValidator} from './scripts/FormValidator.js';
 import {Popup} from './scripts/Popup.js';
 import {UserInfo} from './scripts/UserInfo.js';
 import {validationErrorMessages} from './scripts/validationErrorMessages.js';
-import {logOut} from './scripts/logOutFunction';
 import './pages/index.css';
 
 const page = document.querySelector('.root');
@@ -33,7 +32,7 @@ const apiProperties = {
     token: '8ab3f6fe-db55-4026-9a8e-96b5421c8f61',
 }
 
-const userInfo = new UserInfo(userInfoDataContainer);
+const userInfo = new UserInfo(userInfoDataContainer, document.querySelector('.header'));
 const api = new Api(apiProperties);
 const placesList = new Cardlist(cardListTemplate, page, createCard, cardTemplate, api);
 const popup = new Popup(popupTemplates, createFormValidator, userInfo, userInfoDataContainer, page, placesList, api, validationErrorMessages);
@@ -41,19 +40,19 @@ const popup = new Popup(popupTemplates, createFormValidator, userInfo, userInfoD
 placesList.uploadPopup(popup);
 placesList.render();
 
-// try {
+if (localStorage.isLoggedIn) {
     api.getUserData()
         .then (userData => {
             userInfo.setUserInfo(userData);
             userInfo.updateUserInfo();
+            userInfo.switchButtonsOnLogin();
         })
         .catch (err => {
             console.log(err);
         })
-// }
-// catch {
-
-// }
+} else {
+    console.log('need data');
+}
 
 api.loadDefaultCards()
     .then (defaultCards => {
@@ -68,4 +67,4 @@ addCardButton.addEventListener('click', popup.openHandler);
 profileEditButton.addEventListener('click', popup.openHandler);
 avatarUploadButton.addEventListener('click', popup.openHandler);
 authorizationButton.addEventListener('click', popup.openHandler);
-logoutButton.addEventListener('click', logOut);
+logoutButton.addEventListener('click', userInfo.logout);

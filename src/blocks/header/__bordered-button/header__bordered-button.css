@@ -16,6 +16,12 @@
   flex-direction: row;
   color: white;
   justify-content: center;
+  align-items: center;
+}
+
+.header__bordered-button:hover {
+  background-color: #fff;
+  color: #000;
 }
 
 @media screen and ( max-width: 320px ) {

@@ -160,6 +160,9 @@ export class Popup {
                 if (data.token) {
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('isLoggedIn', 'true');
+                    this._userInfo.setUserInfo(data.user);
+                    this._userInfo.updateUserInfo();
+                    this._userInfo.switchButtonsOnLogin();
                 }
             })
             .catch (err => {
@@ -170,7 +173,7 @@ export class Popup {
             })
     }
 
-    _submitRegistrationForm = (event) => {
+    _submitRegistrationForm = () => {
         const credentials = {};
         credentials.email = this._view.querySelector('form').elements.email.value;
         credentials.password = this._view.querySelector('form').elements.password.value;
@@ -187,7 +190,7 @@ export class Popup {
             })
             .finally (() => {
                 this._close();
-                this._openSuccessPopup(event);
+                this._openSuccessPopup();
             })
     }
 
