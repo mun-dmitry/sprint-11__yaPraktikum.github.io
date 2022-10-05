@@ -22,7 +22,8 @@ export class Api {
   getUserData () {
         return fetch (`${this._baseURL}users/me`, {
             headers: {
-                authorization: this._token
+                authorization: `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json',
             }
         })
             .then (res => {
@@ -34,7 +35,7 @@ export class Api {
             })
             .then (userData => {
                 this._myId = userData._id;
-                return userData;
+                return userData.data;
             })
     }
 
@@ -53,8 +54,8 @@ export class Api {
         return fetch(`${this._baseURL}users/me`, {
             method: 'PATCH',
             headers: {
-                authorization: this._token,
-                'Content-Type': 'application/json'
+                authorization: `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 name: userData.name,
@@ -74,8 +75,8 @@ export class Api {
         return fetch(`${this._baseURL}cards`, {
             method: 'POST',
             headers: {
-                authorization: this._token,
-                'Content-Type': 'application/json'
+                authorization: `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 name: cardData.name,
@@ -95,8 +96,8 @@ export class Api {
         return fetch(`${this._baseURL}cards/${card._cardData._id}`, {
             method: 'DELETE',
             headers: {
-                authorization: this._token,
-                'Content-Type': 'application/json'
+                authorization: `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json',
             }
         })
             .then (res => {
@@ -109,11 +110,11 @@ export class Api {
     }
 
     likeCard (card) {
-        return fetch(`${this._baseURL}cards/like/${card._cardData._id}`, {
+        return fetch(`${this._baseURL}cards/${card._cardData._id}/likes`, {
             method: 'PUT',
             headers: {
-                authorization: this._token,
-                'Content-Type': 'application/json'
+                authorization: `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json',
             }
         })
             .then (res => {
@@ -126,11 +127,11 @@ export class Api {
     }
 
     dislikeCard (card) {
-        return fetch(`${this._baseURL}cards/like/${card._cardData._id}`, {
+        return fetch(`${this._baseURL}cards/${card._cardData._id}/likes`, {
             method: 'DELETE',
             headers: {
-                authorization: this._token,
-                'Content-Type': 'application/json'
+                authorization: `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json',
             }
         })
             .then (res => {
@@ -146,8 +147,8 @@ export class Api {
         return fetch(`${this._baseURL}users/me/avatar`, {
             method: 'PATCH',
             headers: {
-                authorization: this._token,
-                'Content-Type': 'application/json'
+                authorization: `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 avatar: link
@@ -187,6 +188,8 @@ export class Api {
             email: userData.email,
             password: userData.password,
             name: userData.name,
+            about: userData.about,
+            avatar: userData.avatar,
           }),
         })
           .then((res) => {

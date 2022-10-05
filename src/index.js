@@ -5,13 +5,15 @@ import {FormValidator} from './scripts/FormValidator.js';
 import {Popup} from './scripts/Popup.js';
 import {UserInfo} from './scripts/UserInfo.js';
 import {validationErrorMessages} from './scripts/validationErrorMessages.js';
+import {logOut} from './scripts/logOutFunction';
 import './pages/index.css';
 
 const page = document.querySelector('.root');
 const addCardButton = document.querySelector('.user-info__button');
 const profileEditButton = document.querySelector('.user-info__edit-button');
 const avatarUploadButton = document.querySelector('.user-info__photo');
-const authorizationButton = document.querySelector('.header__bordered-button');
+const authorizationButton = document.getElementById('authorize-button');
+const logoutButton = document.getElementById('logout-button');
 const createCard = (...arg) => new Card(...arg);
 const createFormValidator = (...arg) => new FormValidator(...arg);
 const userInfoDataContainer = document.querySelector('.user-info');
@@ -39,24 +41,31 @@ const popup = new Popup(popupTemplates, createFormValidator, userInfo, userInfoD
 placesList.uploadPopup(popup);
 placesList.render();
 
-api.getUserData()
-    .then (userData => {
-        userInfo.setUserInfo(userData);
-        userInfo.updateUserInfo();
-    })
-    .catch (err => {
-        console.log(err);
-    })
+// try {
+    api.getUserData()
+        .then (userData => {
+            userInfo.setUserInfo(userData);
+            userInfo.updateUserInfo();
+        })
+        .catch (err => {
+            console.log(err);
+        })
+// }
+// catch {
+
+// }
 
 api.loadDefaultCards()
     .then (defaultCards => {
-        defaultCards.forEach(card => {placesList.addCard(card)});
+        defaultCards.data.forEach(card => {placesList.addCard(card)});
     })
     .catch (err => {
         console.log(err);
     });
 
+
 addCardButton.addEventListener('click', popup.openHandler);
 profileEditButton.addEventListener('click', popup.openHandler);
 avatarUploadButton.addEventListener('click', popup.openHandler);
 authorizationButton.addEventListener('click', popup.openHandler);
+logoutButton.addEventListener('click', logOut);

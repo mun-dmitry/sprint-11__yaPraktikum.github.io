@@ -57,6 +57,12 @@ export class Popup {
         }
     }
 
+    _onOutsideClickCloser = (event) => {
+        if (event.target.classList.contains('popup')) {
+          this._close();
+        }
+    }
+
     _openRegistrationForm = () => {
         this._view = this._templates.registration.content.cloneNode(true).children[0];
         this._setFormValidator();
@@ -65,16 +71,10 @@ export class Popup {
     }
 
     _openAuthorizationForm = () => {
-        // if (event.target.innerText === 'Авторизоваться') {
             this._view = this._templates.login.content.cloneNode(true).children[0];
             this._setFormValidator();
             this._view.querySelector('.popup__button').addEventListener('click', this._submitLoginForm);
             this._view.querySelector('.popup__link').addEventListener('click', this.openHandler);
-        // }   else if (event.target.innerText === 'Войти') {
-
-        // } else {
-        //   console.log('Деавторизация');
-        // }
     }
 
     _openSuccessPopup = () => {
@@ -105,8 +105,8 @@ export class Popup {
         cardData.link = this._view.querySelector('form').elements.link.value;
         this._animateLoadingButton();
         this._api.addCard(cardData)
-            .then (card => {
-                this._cardList.addCard(card);
+            .then (dataContainer => {
+                this._cardList.addCard(dataContainer.data);
             })
             .catch (err => {
                 console.log(err);
@@ -122,8 +122,8 @@ export class Popup {
         userData.about = this._view.querySelector('form').elements.about.value;
         this._animateLoadingButton();
         this._api.changeUserInfo(userData)
-            .then (userData => {
-                this._userInfo.setUserInfo(userData);
+            .then (dataContainer => {
+                this._userInfo.setUserInfo(dataContainer.data);
                 this._userInfo.updateUserInfo();
             })
             .catch (err => {
@@ -138,9 +138,9 @@ export class Popup {
         const link = this._view.querySelector('form').elements.link.value;
         this._animateLoadingButton();
         this._api.uploadNewAvatar(link)
-            .then (userData => {
-                this._userInfo.setUserInfo(userData);
-                this._userInfo.updateUserInfo(userData);
+            .then (dataContainer => {
+                this._userInfo.setUserInfo(dataContainer.data);
+                this._userInfo.updateUserInfo();
             })
             .catch (err => {
                 console.log(err);
@@ -156,8 +156,11 @@ export class Popup {
         credentials.password = this._view.querySelector('form').elements.password.value;
         this._animateLoadingButton();
         this._api.signIn(credentials)
-            .then (userData => {
-                console.log(userData);
+            .then (data => {
+                if (data.token) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('isLoggedIn', 'true');
+                }
             })
             .catch (err => {
                 console.log(err);
@@ -172,6 +175,8 @@ export class Popup {
         credentials.email = this._view.querySelector('form').elements.email.value;
         credentials.password = this._view.querySelector('form').elements.password.value;
         credentials.name = this._view.querySelector('form').elements.name.value;
+        credentials.about = this._view.querySelector('form').elements.about.value;
+        credentials.avatar = this._view.querySelector('form').elements.avatar.value;
         this._animateLoadingButton();
         this._api.signUp(credentials)
             .then (userData => {
@@ -188,6 +193,7 @@ export class Popup {
 
     _setEventListeners = () => {
         this._view.querySelector('.popup__close').addEventListener('click', this._close);
-        this._parentObject.addEventListener('keydown', this._onEscCloser);
+        document.addEventListener('keydown', this._onEscCloser);
+        this._view.addEventListener('click', this._onOutsideClickCloser);
     }
 }

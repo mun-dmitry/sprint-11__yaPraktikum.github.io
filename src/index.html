@@ -12,7 +12,10 @@
   <div class="root">
     <header class="header root__section">
       <img src="<%=require('./images/logo.svg')%>" alt="mesto logo" class="logo">
-      <button class="header__bordered-button" id="authorize">Авторизоваться</button>
+      <button class="header__bordered-button" id="authorize-button">Авторизоваться</button>
+      <button class="header__bordered-button header__bordered-button_hidden" id="logout-button">
+        <span></span><img src="<%=require('./images/logout-icon.svg')%>" alt="иконка деавторизации">
+      </button>
     </header>
 
     <div class="profile root__section">
@@ -158,6 +161,16 @@
               <div class="popup__input-container">
                   <input type="text" name="name" class="popup__input" placeholder="Введите своё имя" minlength="2" maxlength="30" required>
                   <span class="error"></span>
+              </div>
+
+              <div class="popup__input-container">
+                <input type="text" name="about" class="popup__input" placeholder="О себе" minlength="2" maxlength="30" required>
+                <span class="error"></span>
+              </div>
+
+              <div class="popup__input-container">
+                <input type="url" name="avatar" class="popup__input" placeholder="Введите ссылку на свой аватар" required>
+                <span class="error"></span>
               </div>
 
               <span class="error error_conflict"></span>

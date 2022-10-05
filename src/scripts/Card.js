@@ -15,7 +15,7 @@ export class Card {
     _like = () => {
         this._api.likeCard(this)
             .then (cardData => {
-                this._view.querySelector('.place-card__likes-counter').textContent = cardData.likes.length;
+                this._view.querySelector('.place-card__likes-counter').textContent = cardData.data.likes.length;
                 this._view.querySelector('.place-card__like-icon').classList.add('place-card__like-icon_liked');
                 this._view.querySelector('.place-card__like-icon').removeEventListener('click', this._like);
                 this._view.querySelector('.place-card__like-icon').addEventListener('click', this._dislike);
@@ -28,7 +28,7 @@ export class Card {
     _dislike = () => {
         this._api.dislikeCard(this)
             .then (cardData => {
-                this._view.querySelector('.place-card__likes-counter').textContent = cardData.likes.length;
+                this._view.querySelector('.place-card__likes-counter').textContent = cardData.data.likes.length;
                 this._view.querySelector('.place-card__like-icon').classList.remove('place-card__like-icon_liked');
                 this._view.querySelector('.place-card__like-icon').removeEventListener('click', this._dislike);
                 this._view.querySelector('.place-card__like-icon').addEventListener('click', this._like);
