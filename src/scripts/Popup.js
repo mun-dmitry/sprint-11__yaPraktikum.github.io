@@ -35,6 +35,12 @@ export class Popup {
         }
     }
 
+    _onOutsideClickCloser = (event) => {
+        if (event.target.classList.contains('popup')) {
+          this._close();
+        }
+      }
+
     _switchPopup = (event) => {
         this._close();
         if (event.target.innerText === 'Войти') {
@@ -78,6 +84,7 @@ export class Popup {
         this._view = this._templates.login.content.cloneNode(true).children[0];
         this._setFormValidator();
         this._view.querySelector('.popup__link').addEventListener('click', this._switchPopup);
+        this._view.querySelector('.popup__button').addEventListener('click', this._submitLoginForm);
         this._setState();
     }
 
@@ -87,7 +94,6 @@ export class Popup {
         this._view.querySelector('.popup__link').addEventListener('click', this._switchPopup);
         this._setState();
     }
-
 
     _setFormValidator = () => {
         const formValidator = this._createFormValidator(this._view.querySelector('form'), this._validationErrorMessages);
@@ -152,9 +158,41 @@ export class Popup {
             });
     }
 
+    _submitLoginForm = () => {
+        this._view.querySelector('.popup__button').setAttribute('disabled', true);
+        this._animateLoadingButton();
+        const credentials = {
+            email: this._view.querySelector('form').elements.email.value,
+            password: this._view.querySelector('form').elements.password.value,
+        }
+        this._api.signIn(credentials)
+            .then((data) => {
+                this._view.querySelector('.popup__button').removeAttribute('disabled');
+                if (data.token) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('isLoggedIn', true);
+                    const myId = data.id;
+                    this._api.getUserData()
+                        .then(data => {
+                            this._userInfo.setUserInfo(data);
+                            this._userInfo.updateUserInfo();
+                        })
+                }
+            })
+            .catch((error) => error.json())
+            .finally(() => {
+                this._close();
+            })
+    }
+
+    // _submitRegistrationForm = () => {
+        
+    // }
+
     _setEventListeners = () => {
         this._view.querySelector('.popup__close').addEventListener('click', this._close);
         window.addEventListener('keydown', this._onEscCloser);
+        this._view.addEventListener('click', this._onOutsideClickCloser);
     }
 
     _setState = () => {
