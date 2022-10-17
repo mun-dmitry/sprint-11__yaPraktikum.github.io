@@ -13,36 +13,17 @@ export class Popup {
 
     openHandler = (event) => {
         if (event.target.classList.contains('user-info__button')) {
-            this._view = this._templates.addCard.content.cloneNode(true).children[0];
-            this._setFormValidator();
-            this._view.querySelector('.popup__button').addEventListener('click', this._submitAddCardForm);
+            this._openAddCardPopup();
         } else if (event.target.classList.contains('user-info__edit-button')) {
-            this._view = this._templates.profile.content.cloneNode(true).children[0];
-            this._setFormValidator();
-            this._view.querySelector('#profile-form').elements.name.value = this._userInfoDataContainer.querySelector('.user-info__name').textContent;
-            this._view.querySelector('#profile-form').elements.about.value = this._userInfoDataContainer.querySelector('.user-info__job').textContent;
-            this._view.querySelector('.popup__button').addEventListener('click', this._submitProfileForm);
+            this._openUserInfoEditPopup();
         } else if (event.target.classList.contains('place-card__image')) {
-            this._view = this._templates.image.content.cloneNode(true).children[0];
-            const imageUrl = event.target.style.backgroundImage.substr(5, event.target.style.backgroundImage.length - 7);
-            this._view.querySelector('.popup__image').setAttribute('src', imageUrl);
+            this._openImagePopup(event);
         } else if (event.target.classList.contains('user-info__photo')) {
-            this._view = this._templates.avatar.content.cloneNode(true).children[0];
-            this._setFormValidator();
-            this._view.querySelector('.popup__button').addEventListener('click', this._uploadAvatar);
+            this._openAvatarUploadPopup();
         } else if (event.target.classList.contains('header__bordered-button')) {
-            if (event.target.innerText === 'Авторизоваться') {
-                this._view = this._templates.login.content.cloneNode(true).children[0];
-                this._setFormValidator();
-            } else {
-              console.log('Деавторизация');
-            }
+            this._openLoginPopup();
         }
-
-        this._view.classList.add('popup_is-opened');
-        this._setEventListeners();
-        this._parentObject.append(this._view);
-    }
+    }        
 
     _close = () => {
         this._view.remove();
@@ -53,6 +34,60 @@ export class Popup {
             this._close();
         }
     }
+
+    _switchPopup = (event) => {
+        this._close();
+        if (event.target.innerText === 'Войти') {
+            this._openLoginPopup();
+        } else if (event.target.innerText === 'Зарегистрироваться') {
+            this._openRegistrationPopup();
+        }
+    }
+
+    _openAddCardPopup = () => {
+        this._view = this._templates.addCard.content.cloneNode(true).children[0];
+        this._setFormValidator();
+        this._view.querySelector('.popup__button').addEventListener('click', this._submitAddCardForm);
+        this._setState();
+    }
+
+    _openUserInfoEditPopup = () => {
+        this._view = this._templates.profile.content.cloneNode(true).children[0];
+        this._setFormValidator();
+        this._view.querySelector('#profile-form').elements.name.value = this._userInfoDataContainer.querySelector('.user-info__name').textContent;
+        this._view.querySelector('#profile-form').elements.about.value = this._userInfoDataContainer.querySelector('.user-info__job').textContent;
+        this._view.querySelector('.popup__button').addEventListener('click', this._submitProfileForm);
+        this._setState();
+    }
+
+    _openImagePopup = (event) => {
+        this._view = this._templates.image.content.cloneNode(true).children[0];
+        const imageUrl = event.target.style.backgroundImage.substr(5, event.target.style.backgroundImage.length - 7);
+        this._view.querySelector('.popup__image').setAttribute('src', imageUrl);
+        this._setState();
+    }
+
+    _openAvatarUploadPopup = () => {
+        this._view = this._templates.avatar.content.cloneNode(true).children[0];
+        this._setFormValidator();
+        this._view.querySelector('.popup__button').addEventListener('click', this._uploadAvatar);
+        this._setState();
+    }
+
+    _openLoginPopup = () => {
+        this._view = this._templates.login.content.cloneNode(true).children[0];
+        this._setFormValidator();
+        this._view.querySelector('.popup__link').addEventListener('click', this._switchPopup);
+        this._setState();
+    }
+
+    _openRegistrationPopup = () => {
+        this._view = this._templates.registration.content.cloneNode(true).children[0];
+        this._setFormValidator();
+        this._view.querySelector('.popup__link').addEventListener('click', this._switchPopup);
+        this._setState();
+    }
+
 
     _setFormValidator = () => {
         const formValidator = this._createFormValidator(this._view.querySelector('form'), this._validationErrorMessages);
@@ -120,5 +155,11 @@ export class Popup {
     _setEventListeners = () => {
         this._view.querySelector('.popup__close').addEventListener('click', this._close);
         window.addEventListener('keydown', this._onEscCloser);
+    }
+
+    _setState = () => {
+        this._view.classList.add('popup_is-opened');
+        this._setEventListeners();
+        this._parentObject.append(this._view);
     }
 }
