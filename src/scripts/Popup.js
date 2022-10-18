@@ -117,7 +117,7 @@ export class Popup {
     }
 
     _submitAddCardForm = () => {
-        const cardData = [];
+        const cardData = {};
         cardData.name = this._view.querySelector('form').elements.name.value;
         cardData.link = this._view.querySelector('form').elements.link.value;
         this._animateLoadingButton();
@@ -134,7 +134,7 @@ export class Popup {
     }
 
     _submitProfileForm = () => {
-        const userData =[];
+        const userData ={};
         userData.name = this._view.querySelector('form').elements.name.value;
         userData.about = this._view.querySelector('form').elements.about.value;
         this._animateLoadingButton();
@@ -185,6 +185,7 @@ export class Popup {
                         .then(data => {
                             this._userInfo.setUserInfo(data);
                             this._userInfo.updateUserInfo();
+                            this._userInfo.showLogoutButton();
                         })
                 }
             })
