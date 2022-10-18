@@ -53,7 +53,7 @@ export class Card {
     
     _checkMyLike = () => {
         this._isLiked = this._cardData.likes.some(like => {
-            return (like._id == this._api._myId)
+            return (like === localStorage.myId)
         })
         if (this._isLiked) {
             this._view.querySelector('.place-card__like-icon').classList.add('place-card__like-icon_liked');
@@ -63,7 +63,7 @@ export class Card {
     }
 
     _checkDeleteAbility = () => {
-        if (this._cardData.owner._id == this._api._myId) {
+        if (this._cardData.owner == localStorage.myId) {
             this._view.querySelector('.place-card__delete-icon').style.display = 'block';
         }
     }
