@@ -26,13 +26,10 @@ const popupTemplates = {
     registration: document.querySelector('#registration-template'),
     success: document.querySelector('#success-template'),
 }
-const apiProperties = {
-    baseUrl: NODE_ENV === 'development' ? 'http://localhost:3000/' : 'https://api.yapr-mestoapp.tk/',
-    token: '8ab3f6fe-db55-4026-9a8e-96b5421c8f61',
-}
+const baseUrl = NODE_ENV === 'development' ? 'http://localhost:3000/' : 'https://api.yapr-mestoapp.tk/';
 
 const userInfo = new UserInfo(userInfoDataContainer);
-const api = new Api(apiProperties);
+const api = new Api(baseUrl);
 const placesList = new Cardlist(cardListTemplate, page, createCard, cardTemplate, api);
 const popup = new Popup(popupTemplates, createFormValidator, userInfo, userInfoDataContainer, page, placesList, api, validationErrorMessages);
 

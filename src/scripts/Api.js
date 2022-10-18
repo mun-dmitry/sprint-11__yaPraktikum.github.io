@@ -1,7 +1,6 @@
 export class Api {
-    constructor (apiProperties) {
-        this._baseURL = apiProperties.baseUrl;
-        this._token = apiProperties.token;
+    constructor (baseUrl) {
+        this._baseURL = baseUrl;
     }
 
     /**
@@ -19,7 +18,7 @@ export class Api {
      пропустить этот участок или ошибиться в нем.
      */
 
-  getUserData () {
+    getUserData () {
         return fetch (`${this._baseURL}users/me`, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -191,6 +190,8 @@ export class Api {
             email: userData.email,
             password: userData.password,
             name: userData.name,
+            about: userData.about,
+            avatar: userData.avatar,
           }),
         })
           .then((res) => {
@@ -200,5 +201,5 @@ export class Api {
             return Promise.reject(res.message);
           })
           .then((data) => data)
-      }
+    }
 }

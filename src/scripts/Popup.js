@@ -43,7 +43,9 @@ export class Popup {
 
     _switchPopup = (event) => {
         this._close();
-        if (event.target.innerText === 'Войти') {
+        if(!event) {
+            this._openSuccessPopup();   
+        } else if (event.target.innerText === 'Войти') {
             this._openLoginPopup();
         } else if (event.target.innerText === 'Зарегистрироваться') {
             this._openRegistrationPopup();
@@ -91,6 +93,13 @@ export class Popup {
     _openRegistrationPopup = () => {
         this._view = this._templates.registration.content.cloneNode(true).children[0];
         this._setFormValidator();
+        this._view.querySelector('.popup__link').addEventListener('click', this._switchPopup);
+        this._view.querySelector('.popup__button').addEventListener('click', this._submitRegistrationForm);
+        this._setState();
+    }
+
+    _openSuccessPopup = () => {
+        this._view = this._templates.success.content.cloneNode(true).children[0];
         this._view.querySelector('.popup__link').addEventListener('click', this._switchPopup);
         this._setState();
     }
@@ -171,7 +180,7 @@ export class Popup {
                 if (data.token) {
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('isLoggedIn', true);
-                    const myId = data.id;
+                    localStorage.setItem('myId', data.id);
                     this._api.getUserData()
                         .then(data => {
                             this._userInfo.setUserInfo(data);
@@ -179,15 +188,32 @@ export class Popup {
                         })
                 }
             })
-            .catch((error) => error.json())
+            .catch((error) => {
+                console.log(error);
+            })
             .finally(() => {
                 this._close();
             })
     }
 
-    // _submitRegistrationForm = () => {
-        
-    // }
+    _submitRegistrationForm = () => {
+        this._view.querySelector('.popup__button').setAttribute('disabled', true);
+        this._animateLoadingButton();
+        const userData = {
+            email: this._view.querySelector('form').elements.email.value,
+            password: this._view.querySelector('form').elements.password.value,
+            about: this._view.querySelector('form').elements.about.value,
+            avatar: this._view.querySelector('form').elements.avatar.value,
+            name: this._view.querySelector('form').elements.name.value,
+        }
+        this._api.signUp(userData)
+            .catch((error) => {
+                console.log(error);
+            })
+            .finally(() => {
+                this._switchPopup();
+            })
+    }
 
     _setEventListeners = () => {
         this._view.querySelector('.popup__close').addEventListener('click', this._close);
