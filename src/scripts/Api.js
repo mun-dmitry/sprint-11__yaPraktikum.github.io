@@ -71,6 +71,7 @@ export class Api {
                     return Promise.reject(res);
                 }
             })
+            .then (response => response.data);
     }
 
     addCard (cardData) {
@@ -163,6 +164,7 @@ export class Api {
                     return Promise.reject(`Ошибка: ${res.status}`);
                 }
             })
+            .then (response => response.data);
     }
 
     signIn (credentials) {
