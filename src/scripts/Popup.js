@@ -23,7 +23,7 @@ export class Popup {
         } else if (event.target.classList.contains('header__bordered-button')) {
             this._openLoginPopup();
         }
-    }        
+    }
 
     _close = () => {
         this._view.remove();
@@ -78,7 +78,7 @@ export class Popup {
     _openAvatarUploadPopup = () => {
         this._view = this._templates.avatar.content.cloneNode(true).children[0];
         this._setFormValidator();
-        this._view.querySelector('.popup__button').addEventListener('click', this._uploadAvatar);
+        this._view.querySelector('.popup__button').addEventListener('click', this._submitAvatarForm);
         this._setState();
     }
 
@@ -151,7 +151,7 @@ export class Popup {
             })
     }
 
-    _uploadAvatar = () => {
+    _submitAvatarForm = () => {
         const link = this._view.querySelector('form').elements.link.value;
         this._animateLoadingButton();
         this._api.uploadNewAvatar(link)
@@ -169,11 +169,11 @@ export class Popup {
 
     _submitLoginForm = () => {
         this._view.querySelector('.popup__button').setAttribute('disabled', true);
-        this._animateLoadingButton();
         const credentials = {
             email: this._view.querySelector('form').elements.email.value,
             password: this._view.querySelector('form').elements.password.value,
         }
+        this._animateLoadingButton();
         this._api.signIn(credentials)
             .then((data) => {
                 this._view.querySelector('.popup__button').removeAttribute('disabled');
@@ -199,7 +199,6 @@ export class Popup {
 
     _submitRegistrationForm = () => {
         this._view.querySelector('.popup__button').setAttribute('disabled', true);
-        this._animateLoadingButton();
         const userData = {
             email: this._view.querySelector('form').elements.email.value,
             password: this._view.querySelector('form').elements.password.value,
@@ -207,6 +206,7 @@ export class Popup {
             avatar: this._view.querySelector('form').elements.avatar.value,
             name: this._view.querySelector('form').elements.name.value,
         }
+        this._animateLoadingButton();
         this._api.signUp(userData)
             .catch((error) => {
                 console.log(error);
