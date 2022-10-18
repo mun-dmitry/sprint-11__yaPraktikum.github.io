@@ -12,6 +12,7 @@ const addCardButton = document.querySelector('.user-info__button');
 const profileEditButton = document.querySelector('.user-info__edit-button');
 const avatarUploadButton = document.querySelector('.user-info__photo');
 const authorizationButton = document.querySelector('#authorize-button');
+const logoutButton = document.querySelector('#logout-button');
 const createCard = (...arg) => new Card(...arg);
 const createFormValidator = (...arg) => new FormValidator(...arg);
 const userInfoDataContainer = document.querySelector('.user-info');
@@ -27,8 +28,12 @@ const popupTemplates = {
     success: document.querySelector('#success-template'),
 }
 const baseUrl = NODE_ENV === 'development' ? 'http://localhost:3000/' : 'https://api.yapr-mestoapp.tk/';
+const userInfoButtons = {
+    authorizationButton,
+    logoutButton
+}
 
-const userInfo = new UserInfo(userInfoDataContainer);
+const userInfo = new UserInfo(userInfoDataContainer, userInfoButtons);
 const api = new Api(baseUrl);
 const placesList = new Cardlist(cardListTemplate, page, createCard, cardTemplate, api);
 const popup = new Popup(popupTemplates, createFormValidator, userInfo, userInfoDataContainer, page, placesList, api, validationErrorMessages);
@@ -36,14 +41,19 @@ const popup = new Popup(popupTemplates, createFormValidator, userInfo, userInfoD
 placesList.uploadPopup(popup);
 placesList.render();
 
-api.getUserData()
-    .then (userData => {
-        userInfo.setUserInfo(userData);
-        userInfo.updateUserInfo();
-    })
-    .catch (err => {
-        console.log(err);
-    })
+if (localStorage.isLoggedIn) {
+    api.getUserData()
+        .then (userData => {
+            userInfo.setUserInfo(userData);
+            userInfo.updateUserInfo();
+        })
+        .catch (err => {
+            console.log(err);
+        })
+    
+    userInfo.showLogoutButton();
+    logoutButton.addEventListener('click', userInfo.logout)
+}
 
 api.loadDefaultCards()
     .then (defaultCards => {
