@@ -59,12 +59,18 @@ export class Card {
             this._view.querySelector('.place-card__like-icon').classList.add('place-card__like-icon_liked');
             this._view.querySelector('.place-card__like-icon').removeEventListener('click', this._like);
             this._view.querySelector('.place-card__like-icon').addEventListener('click', this._dislike);
+        } else {
+            this._view.querySelector('.place-card__like-icon').classList.remove('place-card__like-icon_liked');
+            this._view.querySelector('.place-card__like-icon').removeEventListener('click', this._dislike);
+            this._view.querySelector('.place-card__like-icon').addEventListener('click', this._like);
         }
     }
 
     _checkDeleteAbility = () => {
         if (this._cardData.owner == localStorage.myId) {
             this._view.querySelector('.place-card__delete-icon').style.display = 'block';
+        } else {
+            this._view.querySelector('.place-card__delete-icon').style.display = 'none';
         }
     }
 

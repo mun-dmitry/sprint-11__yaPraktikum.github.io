@@ -29,15 +29,16 @@ if (localStorage.isLoggedIn) {
             console.log(err);
         })
     userInfo.showLogoutButton();
-    pageElements.logoutButton.addEventListener('click', userInfo.logout)
+    
 }
 
 api.loadDefaultCards()
-    .then (defaultCards => {
-        defaultCards.forEach(card => {placesList.addCard(card)});
+    .then(defaultCards => {
+        placesList.createList(defaultCards);
     })
-    .catch (err => {
-        console.log(err);
-    });
 
 pageElements.authorizationButton.addEventListener('click', popup.openHandler);
+pageElements.logoutButton.addEventListener('click', () => {
+    userInfo.logout();
+    placesList.checkCards();
+})

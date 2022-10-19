@@ -6,10 +6,26 @@ export class Cardlist {
         this._cardTemplate = cardTemplate;
         this._template = template;
         this._api = api;
+        this._cardlist = [];
     }
 
-    addCard = (cardData) => {
-        this._createCard(cardData, this._cardTemplate, this._popup, this._api).create(this._view);
+    createList = (cardList) => {
+        cardList.forEach(card => {
+            this._addCard(card);
+        })
+    }
+
+    checkCards = () => {
+        this._cardlist.forEach(card => {
+            card._checkMyLike();
+            card._checkDeleteAbility();
+        })
+    }
+
+    _addCard = (cardData) => {
+        const cardObj = this._createCard(cardData, this._cardTemplate, this._popup, this._api);
+        this._cardlist.push(cardObj);
+        cardObj.create(this._view);
     }
 
     render = () => {

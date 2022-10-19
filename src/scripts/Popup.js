@@ -189,6 +189,7 @@ export class Popup {
                             this._userInfo.setUserInfo(data);
                             this._userInfo.updateUserInfo();
                             this._userInfo.showLogoutButton();
+                            this._cardList.checkCards();
                         })
                 }
             })
