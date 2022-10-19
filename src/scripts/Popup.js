@@ -1,10 +1,8 @@
 export class Popup {
 
-    constructor (templates, createFormValidator, userInfo, userInfoDataContainer, parentObject, cardList, api, validationErrorMessages) {
-        this._createFormValidator = createFormValidator;
-        this._userInfo = userInfo;
-        this._userInfoDataContainer = userInfoDataContainer;
+    constructor (templates, createFormValidator, parentObject, cardList, api, validationErrorMessages) {
         this._templates = templates;
+        this._createFormValidator = createFormValidator;
         this._parentObject = parentObject;
         this._cardList = cardList;
         this._api = api;
@@ -23,6 +21,10 @@ export class Popup {
         } else if (event.target.classList.contains('header__bordered-button')) {
             this._openLoginPopup();
         }
+    }
+
+    connectUserInfo = (userInfoObject) => {
+        this._userInfo = userInfoObject;
     }
 
     _close = () => {
@@ -62,8 +64,8 @@ export class Popup {
     _openUserInfoEditPopup = () => {
         this._view = this._templates.profile.content.cloneNode(true).children[0];
         this._setFormValidator();
-        this._view.querySelector('#profile-form').elements.name.value = this._userInfoDataContainer.querySelector('.user-info__name').textContent;
-        this._view.querySelector('#profile-form').elements.about.value = this._userInfoDataContainer.querySelector('.user-info__job').textContent;
+        this._view.querySelector('#profile-form').elements.name.value = this._userInfo.returnValue('name');
+        this._view.querySelector('#profile-form').elements.about.value = this._userInfo.returnValue('about');
         this._view.querySelector('.popup__button').addEventListener('click', this._submitProfileForm);
         this._setState();
     }
@@ -178,11 +180,12 @@ export class Popup {
             .then((data) => {
                 this._view.querySelector('.popup__button').removeAttribute('disabled');
                 if (data.token) {
-                    localStorage.setItem('token', data.token);
                     localStorage.setItem('isLoggedIn', true);
+                    localStorage.setItem('token', data.token);
                     localStorage.setItem('myId', data.id);
                     this._api.getUserData()
                         .then(data => {
+                            this._userInfo.render();
                             this._userInfo.setUserInfo(data);
                             this._userInfo.updateUserInfo();
                             this._userInfo.showLogoutButton();

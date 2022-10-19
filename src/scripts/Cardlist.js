@@ -12,12 +12,12 @@ export class Cardlist {
         this._createCard(cardData, this._cardTemplate, this._popup, this._api).create(this._view);
     }
 
-    render = (container) => {
+    render = () => {
         this._view = this._template.content.cloneNode(true).children[0];
         this._container.append(this._view);
     }
 
-    uploadPopup (popupObject) {
+    connectPopup (popupObject) {
         this._popup = popupObject;
     }
 }

@@ -1,14 +1,32 @@
 export class UserInfo {
 
-    constructor (dataContainer, buttons) {
-        this._dataContainer = dataContainer;
+    constructor (template, parentElement, buttons, popupObject) {
+        this._template = template;
+        this._parentElement = parentElement;
         this._buttons = buttons;
+        this._popup = popupObject;
+    }
+
+    render = () => {
+        this._view = this._template.content.cloneNode(true).children[0];
+        this._parentElement.append(this._view);
+        this._dataContainer = document.querySelector('.user-info');
+        this._setListeners();
     }
 
     setUserInfo = (userData) => {
         this._name = userData.name;
         this._about = userData.about;
         this._avatar = userData.avatar;
+    }
+
+    returnValue = (value) => {
+        switch (value) {
+            case 'name': return this._name;
+            case 'about': return this._about;
+            case 'avatar': return this._avatar;
+            default: return null;
+        }
     }
 
     updateUserInfo = () => {
@@ -32,6 +50,13 @@ export class UserInfo {
         localStorage.removeItem('isLoggedIn');
         localStorage.removeItem('token');
         localStorage.removeItem('myId');
+        this._view.remove();
         this.showAuthorizationButton();
+    }
+
+    _setListeners = () => {
+        this._view.querySelector('.user-info__button').addEventListener('click', this._popup.openHandler);
+        this._view.querySelector('.user-info__edit-button').addEventListener('click', this._popup.openHandler);
+        this._view.querySelector('.user-info__photo').addEventListener('click', this._popup.openHandler);
     }
 }

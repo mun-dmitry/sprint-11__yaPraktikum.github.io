@@ -19,7 +19,7 @@
     </header>
 
     <div class="profile root__section">
-      <div class="user-info">
+      <!-- <div class="user-info">
         <div class="user-info__photo"></div>
         <div class="user-info__data">
           <h1 class="user-info__name"></h1>
@@ -27,12 +27,27 @@
           <button class="button user-info__edit-button">Edit</button>
         </div>
         <button class="button user-info__button">+</button>
-      </div>
+      </div> -->
+    </div>
+
+    <template id="profile-section-template">
+      <!-- <div class="profile root__section"> -->
+        <div class="user-info">
+          <div class="user-info__photo"></div>
+          <div class="user-info__data">
+            <h1 class="user-info__name"></h1>
+            <p class="user-info__job"></p>
+            <button class="button user-info__edit-button">Edit</button>
+          </div>
+          <button class="button user-info__button">+</button>
+        </div>
+      <!-- </div> -->
+    </template>
 
     <template id="places-list-template">
       <div class="places-list root__section"></div>
     </template>
-    
+
     <template id="place-card-template">
       <div class="place-card">
         <div class="place-card__image">
@@ -123,21 +138,17 @@
                   <input type="email" name="email" class="popup__input" placeholder="Введите почту" required>
                 <span class="error"></span>
               </div>
-
               <div class="popup__input-container">
                   <input type="password" name="password" class="popup__input" placeholder="Введите пароль" minlength="6" maxlength="30" required>
                 <span class="error"></span>
               </div>
-
               <span class="error error_conflict"></span>
               <button type="submit" class="button popup__button">Войти</button>
-
               <div class="popup__alt-action">
                 <p class="popup__alt-text">или</p>
                 <button type="button" class="popup__link">Зарегистрироваться</button>
               </div>
           </form>
-
         </div>
       </div>
     </template>
@@ -152,36 +163,29 @@
                   <input type="email" name="email" class="popup__input" placeholder="Введите почту" required>
                   <span class="error"></span>
               </div>
-
               <div class="popup__input-container">
                   <input type="password" name="password" class="popup__input" placeholder="Введите пароль" minlength="6" maxlength="30" required>
                   <span class="error"></span>
               </div>
-
               <div class="popup__input-container">
                   <input type="text" name="name" class="popup__input" placeholder="Введите своё имя" minlength="2" maxlength="30" required>
                   <span class="error"></span>
               </div>
-
               <div class="popup__input-container">
                 <input type="text" name="about" class="popup__input" placeholder="О себе" minlength="2" maxlength="30" required>
                 <span class="error"></span>
               </div>
-
               <div class="popup__input-container">
                 <input type="url" name="avatar" class="popup__input" placeholder="Введите ссылку на свой аватар" required>
                 <span class="error"></span>
               </div>
-
               <span class="error error_conflict"></span>
               <button type="submit" class="button popup__button">Зарегистрироваться</button>
-
               <div class="popup__alt-action">
                 <p class="popup__alt-text">или</p>
                 <button type="button" class="popup__link">Войти</button>
               </div>
           </form>
-
         </div>
       </div>
     </template>
@@ -195,7 +199,5 @@
         </div>
       </div>
     </template>
-
-  </div>
 </body>
 </html>

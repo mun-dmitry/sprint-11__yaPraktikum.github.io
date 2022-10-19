@@ -9,15 +9,17 @@ import './pages/index.css';
 
 const createCard = (...arg) => new Card(...arg);
 const createFormValidator = (...arg) => new FormValidator(...arg);
-const userInfo = new UserInfo(pageElements.userInfoDataContainer, userInfoButtons);
 const api = new Api(baseUrl);
 const placesList = new Cardlist(templates.cardListTemplate, pageElements.page, createCard, templates.cardTemplate, api);
-const popup = new Popup(templates, createFormValidator, userInfo, pageElements.userInfoDataContainer, pageElements.page, placesList, api, validationErrorMessages);
+const popup = new Popup(templates, createFormValidator, pageElements.page, placesList, api, validationErrorMessages);
+const userInfo = new UserInfo(templates.profileSection, pageElements.profileRootSection, userInfoButtons, popup);
 
-placesList.uploadPopup(popup);
+popup.connectUserInfo(userInfo);
+placesList.connectPopup(popup);
 placesList.render();
 
 if (localStorage.isLoggedIn) {
+    userInfo.render();
     api.getUserData()
         .then (userData => {
             userInfo.setUserInfo(userData);
@@ -26,7 +28,6 @@ if (localStorage.isLoggedIn) {
         .catch (err => {
             console.log(err);
         })
-    
     userInfo.showLogoutButton();
     pageElements.logoutButton.addEventListener('click', userInfo.logout)
 }
@@ -39,7 +40,4 @@ api.loadDefaultCards()
         console.log(err);
     });
 
-pageElements.addCardButton.addEventListener('click', popup.openHandler);
-pageElements.profileEditButton.addEventListener('click', popup.openHandler);
-pageElements.avatarUploadButton.addEventListener('click', popup.openHandler);
 pageElements.authorizationButton.addEventListener('click', popup.openHandler);

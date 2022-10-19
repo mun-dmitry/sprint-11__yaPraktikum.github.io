@@ -1,11 +1,8 @@
 const pageElements = {
     page: document.querySelector('.root'),
-    addCardButton: document.querySelector('.user-info__button'),
-    profileEditButton: document.querySelector('.user-info__edit-button'),
-    avatarUploadButton: document.querySelector('.user-info__photo'),
     authorizationButton: document.querySelector('#authorize-button'),
     logoutButton: document.querySelector('#logout-button'),
-    userInfoDataContainer: document.querySelector('.user-info'),
+    profileRootSection: document.querySelector('.profile'),
 }
 
 const templates = {
@@ -17,7 +14,8 @@ const templates = {
     registration: document.querySelector('#registration-template'),
     success: document.querySelector('#success-template'),
     cardTemplate: document.querySelector('#place-card-template'),
-    cardListTemplate: document.querySelector('#places-list-template')
+    cardListTemplate: document.querySelector('#places-list-template'),
+    profileSection: document.querySelector('#profile-section-template'),
 }
 
 const baseUrl = NODE_ENV === 'development' ? 'http://localhost:3000/' : 'https://api.yapr-mestoapp.tk/';
