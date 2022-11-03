@@ -12,10 +12,14 @@
   <div class="root">
     <header class="header root__section">
       <img src="<%=require('./images/logo.svg')%>" alt="mesto logo" class="logo">
+      <button class="header__bordered-button" id="authorize-button">Авторизоваться</button>
+      <button class="header__bordered-button header__bordered-button_hidden" id="logout-button">
+        <span id="logout-name"></span><img src="<%=require('./images/logout-icon.svg')%>" alt="иконка деавторизации">
+      </button>
     </header>
 
     <div class="profile root__section">
-      <div class="user-info">
+      <!-- <div class="user-info">
         <div class="user-info__photo"></div>
         <div class="user-info__data">
           <h1 class="user-info__name"></h1>
@@ -23,12 +27,27 @@
           <button class="button user-info__edit-button">Edit</button>
         </div>
         <button class="button user-info__button">+</button>
-      </div>
+      </div> -->
+    </div>
+
+    <template id="profile-section-template">
+      <!-- <div class="profile root__section"> -->
+        <div class="user-info">
+          <div class="user-info__photo"></div>
+          <div class="user-info__data">
+            <h1 class="user-info__name"></h1>
+            <p class="user-info__job"></p>
+            <button class="button user-info__edit-button">Edit</button>
+          </div>
+          <button class="button user-info__button">+</button>
+        </div>
+      <!-- </div> -->
+    </template>
 
     <template id="places-list-template">
       <div class="places-list root__section"></div>
     </template>
-    
+
     <template id="place-card-template">
       <div class="place-card">
         <div class="place-card__image">
@@ -109,6 +128,76 @@
       </div>
     </template>
 
-  </div>
+    <template id="login-template" class="popup__template">
+      <div class="popup">
+        <div class="popup__content">
+          <img src="<%=require('./images/close.svg')%>" alt="Иконка закрытия попапа" class="popup__close">
+          <h3 class="popup__title">Вход</h3>
+          <form class="popup__form" id="login-form" novalidate>
+              <div class="popup__input-container">
+                  <input type="email" name="email" class="popup__input" placeholder="Введите почту" required>
+                <span class="error"></span>
+              </div>
+              <div class="popup__input-container">
+                  <input type="password" name="password" class="popup__input" placeholder="Введите пароль" minlength="6" maxlength="30" required>
+                <span class="error"></span>
+              </div>
+              <span class="error error_conflict"></span>
+              <button type="submit" class="button popup__button">Войти</button>
+              <div class="popup__alt-action">
+                <p class="popup__alt-text">или</p>
+                <button type="button" class="popup__link">Зарегистрироваться</button>
+              </div>
+          </form>
+        </div>
+      </div>
+    </template>
+
+    <template id="registration-template" class="popup__template">
+      <div class="popup">
+        <div class="popup__content">
+          <img src="<%=require('./images/close.svg')%>" alt="Иконка закрытия попапа" class="popup__close">
+          <h3 class="popup__title">Регистрация</h3>
+          <form class="popup__form" id="registration-form" novalidate>
+              <div class="popup__input-container">
+                  <input type="email" name="email" class="popup__input" placeholder="Введите почту" required>
+                  <span class="error"></span>
+              </div>
+              <div class="popup__input-container">
+                  <input type="password" name="password" class="popup__input" placeholder="Введите пароль" minlength="6" maxlength="30" required>
+                  <span class="error"></span>
+              </div>
+              <div class="popup__input-container">
+                  <input type="text" name="name" class="popup__input" placeholder="Введите своё имя" minlength="2" maxlength="30" required>
+                  <span class="error"></span>
+              </div>
+              <div class="popup__input-container">
+                <input type="text" name="about" class="popup__input" placeholder="О себе" minlength="2" maxlength="30" required>
+                <span class="error"></span>
+              </div>
+              <div class="popup__input-container">
+                <input type="url" name="avatar" class="popup__input" placeholder="Введите ссылку на свой аватар" required>
+                <span class="error"></span>
+              </div>
+              <span class="error error_conflict"></span>
+              <button type="submit" class="button popup__button">Зарегистрироваться</button>
+              <div class="popup__alt-action">
+                <p class="popup__alt-text">или</p>
+                <button type="button" class="popup__link">Войти</button>
+              </div>
+          </form>
+        </div>
+      </div>
+    </template>
+
+    <template id="success-template" class="popup__template">
+      <div class="popup">
+        <div class="popup__content">
+          <img src="<%=require('./images/close.svg')%>" alt="Иконка закрытия попапа" class="popup__close">
+          <h3 class="popup__title">Пользователь успешно зарегистрирован!</h3>
+          <button class="popup__link popup__link_success">Войти</button>
+        </div>
+      </div>
+    </template>
 </body>
 </html>

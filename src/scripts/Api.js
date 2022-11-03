@@ -1,168 +1,69 @@
 export class Api {
-    constructor (apiProperties) {
-        this._baseURL = apiProperties.baseUrl;
-        this._token = apiProperties.token;
+    constructor (baseUrl) {
+        this._baseURL = baseUrl;
     }
 
-    /**
-     * Можно лучше:
-     * Перенести общую часть с fetch и
-     *             .then (res => {
-                if (res.ok) {
-                    return res.json();
-                } else {
-                    return Promise.reject(`Ошибка: ${res.status}`);
-                }
-            })
-
-     в отдельный метод и использовать его. Тогда в классе не будет дублирующихся частей и исчезнет риск где-то
-     пропустить этот участок или ошибиться в нем.
-     */
-
-  getUserData () {
-        return fetch (`${this._baseURL}users/me`, {
+    async _fetchFunction (adress, method, tokenFlag, body) {
+        const res = await fetch(`${this._baseURL}${adress}`, {
+            method: `${method}`,
             headers: {
-                authorization: this._token
-            }
-        })
-            .then (res => {
-                if (res.ok) {
-                    return res.json();
-                } else {
-                    return Promise.reject(`Ошибка: ${res.status}`);
-                }
-            })
-            .then (userData => {
-                this._myId = userData._id;
-                return userData;
-            })
-    }
-
-    loadDefaultCards () {
-        return fetch (`${this._baseURL}cards`, {
-            headers: {
-                authorization: this._token
-            }
-        })
-            .then (res => {
-                if (res.ok) {
-                    return res.json();
-                } else {
-                    return Promise.reject(`Ошибка: ${res.status}`);
-                }
-            })
-    }
-
-    changeUserInfo (userData) {
-        return fetch(`${this._baseURL}users/me`, {
-            method: 'PATCH',
-            headers: {
-                authorization: this._token,
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                authorization: tokenFlag ? `Bearer ${localStorage.getItem('token')}` : null,
             },
-            body: JSON.stringify({
-                name: userData.name,
-                about: userData.about
-            })
-        })
-            .then (res => {
-                if (res.ok) {
-                    return res.json();
-                } else {
-                    return Promise.reject(`Ошибка: ${res.status}`);
-                }
-            })
+            body: body ? JSON.stringify(body) : null,
+        });
+        if (res.ok) {
+            return res.json();
+        } else {
+            return Promise.reject(`Ошибка: ${res.status}`);
+        }
     }
 
-    addCard (cardData) {
-        return fetch(`${this._baseURL}cards`, {
-            method: 'POST',
-            headers: {
-                authorization: this._token,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                name: cardData.name,
-                link: cardData.link
-            })
-        })
-            .then (res => {
-                if (res.ok) {
-                    return res.json();
-                } else {
-                    return Promise.reject(`Ошибка: ${res.status}`);
-                }
-            })
+    async getUserData () {
+        const response = await this._fetchFunction('users/me', 'GET', true);
+        return response.data;
     }
 
-    deleteCard (card) {
-        return fetch(`${this._baseURL}cards/${card._cardData._id}`, {
-            method: 'DELETE',
-            headers: {
-                authorization: this._token,
-                'Content-Type': 'application/json'
-            }
-        })
-            .then (res => {
-                if (res.ok) {
-                    return res.json();
-                } else {
-                    return Promise.reject(`Ошибка: ${res.status}`);
-                }
-            })
+    async loadDefaultCards () {
+        const response = await this._fetchFunction('cards', 'GET', false);
+        return response.data;
     }
 
-    likeCard (card) {
-        return fetch(`${this._baseURL}cards/like/${card._cardData._id}`, {
-            method: 'PUT',
-            headers: {
-                authorization: this._token,
-                'Content-Type': 'application/json'
-            }
-        })
-            .then (res => {
-                if (res.ok) {
-                    return res.json();
-                } else {
-                    return Promise.reject(`Ошибка: ${res.status}`);
-                }
-            })
+    async changeUserInfo (userData) {
+        const response = await this._fetchFunction('users/me', 'PATCH', true, userData);
+        return response.data;
     }
 
-    dislikeCard (card) {
-        return fetch(`${this._baseURL}cards/like/${card._cardData._id}`, {
-            method: 'DELETE',
-            headers: {
-                authorization: this._token,
-                'Content-Type': 'application/json'
-            }
-        })
-            .then (res => {
-                if (res.ok) {
-                    return res.json();
-                } else {
-                    return Promise.reject(`Ошибка: ${res.status}`);
-                }
-            })
+    async addCard (cardData) {
+        const response = await this._fetchFunction('cards', 'POST', true, cardData);
+        return response.data;
     }
 
-    uploadNewAvatar (link) {
-        return fetch(`${this._baseURL}users/me/avatar`, {
-            method: 'PATCH',
-            headers: {
-                authorization: this._token,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                avatar: link
-            })
-        })
-            .then (res => {
-                if (res.ok) {
-                    return res.json();
-                } else {
-                    return Promise.reject(`Ошибка: ${res.status}`);
-                }
-            })
+    async deleteCard (card) {
+        const response = await this._fetchFunction(`cards/${card._cardData._id}`, 'DELETE', true);
+        return response.data;
+    }
+
+    async likeCard (card) {
+        const response = await this._fetchFunction(`cards/${card._cardData._id}/likes`, 'PUT', true);
+        return response.data;
+    }
+
+    async dislikeCard (card) {
+        const response = await this._fetchFunction(`cards/${card._cardData._id}/likes`, 'DELETE', true);
+        return response.data;
+    }
+
+    async uploadNewAvatar (link) {
+        const response = await this._fetchFunction('users/me/avatar', 'PATCH', true, { avatar: link });
+        return response.data;
+    }
+
+    signIn (credentials) {
+        return this._fetchFunction('signin', 'POST', false, credentials);
+    }
+
+    signUp(userData) {
+        return this._fetchFunction('signup', 'POST', false, userData);
     }
 }

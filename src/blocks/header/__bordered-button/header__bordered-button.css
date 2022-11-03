@@ -1,0 +1,35 @@
+@import url('./_hidden/header__bordered-button_hidden.css');
+
+.header__bordered-button {
+  width: fit-content;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 12px;
+  padding-bottom: 15px;
+  border-radius: 100px;
+  border: 1px solid;
+  margin: auto 0;
+  background-color: transparent;
+  outline: none;
+  height: 48px;
+  display: flex;
+  flex-direction: row;
+  color: white;
+  justify-content: center;
+  align-items: center;
+}
+
+.header__bordered-button:hover {
+  background-color: #fff;
+  color: #000;
+}
+
+@media screen and ( max-width: 320px ) {
+  .header__bordered-button {
+    align-self: center;
+    width: 90%;
+    margin-top: 22px;
+    margin-bottom: 24px;
+    height: 56px;
+  }
+}

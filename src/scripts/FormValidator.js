@@ -28,7 +28,11 @@ export class FormValidator {
         } else if (inputElement.validity.tooShort || inputElement.validity.tooLong) {
             error.textContent = this._errorMessages.wrongLength;
         } else if (inputElement.validity.typeMismatch) {
-            error.textContent = this._errorMessages.urlTypeMismatch;
+            if (inputElement.type === 'url') {
+                error.textContent = this._errorMessages.urlTypeMismatch;
+            } else if (inputElement.type = 'email') {
+                error.textContent = this._errorMessages.emailTypeMismatch
+            }
         }
     }
 
